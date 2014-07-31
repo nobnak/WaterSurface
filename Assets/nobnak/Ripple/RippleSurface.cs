@@ -22,8 +22,8 @@ namespace nobnak.Ripple {
 		void Start() {
 			_rtex0 = new RenderTexture(size, size, 0, RenderTextureFormat.RGFloat, RenderTextureReadWrite.Linear);
 			_rtex1 = new RenderTexture(size, size, 0, RenderTextureFormat.RGFloat, RenderTextureReadWrite.Linear);
-			_rtex0.wrapMode = TextureWrapMode.Repeat;
-			_rtex1.wrapMode = TextureWrapMode.Repeat;
+			_rtex0.wrapMode = TextureWrapMode.Clamp;
+			_rtex1.wrapMode = TextureWrapMode.Clamp;
 			RenderTexture.active = _rtex0;
 			GL.Clear(true, true, Color.black);
 			RenderTexture.active = _rtex1;
@@ -32,6 +32,11 @@ namespace nobnak.Ripple {
 
 			_dt = 1f / fps;
 			_tPrev = Time.timeSinceLevelLoad;
+		}
+
+		void OnDestroy() {
+			if (_ripplesBuffer != null)
+				_ripplesBuffer.Release();
 		}
 
 		void Update() {
