@@ -5,6 +5,8 @@ namespace nobnak.Diffusion {
 
 	public class DiffusionSurface : MonoBehaviour {
 		public const string SHADER_PROP_DT = "_Dt";
+		public const string SHADER_PROP_DX = "_Dx";
+		public const string SHADER_PROP_D = "_D";
 
 		public Material diffusionSurfaceMat;
 		public Material[] outputMats;
@@ -31,6 +33,11 @@ namespace nobnak.Diffusion {
 			_dt = 1f / fps;
 			_tPrev = Time.timeSinceLevelLoad;
 			diffusionSurfaceMat.SetFloat(SHADER_PROP_DT, _dt);
+			var dx = diffusionSurfaceMat.GetFloat(SHADER_PROP_DX);
+			var d = diffusionSurfaceMat.GetFloat(SHADER_PROP_D);
+			var lambda = d * _dt / (dx * dx);
+			if (lambda > 0.25f)
+				diffusionSurfaceMat.SetFloat(SHADER_PROP_D, 0.25f * (dx * dx) / _dt);
 		}
 
 		void Update() {
@@ -56,10 +63,10 @@ namespace nobnak.Diffusion {
 
 			for (var i = 0; i < n; i++) {
 				Graphics.Blit(_rtex0, _rtex1, diffusionSurfaceMat);
-				foreach (var mat in outputMats)
-					mat.mainTexture = _rtex1;
 				var tmpRtex = _rtex0; _rtex0 = _rtex1; _rtex1 = tmpRtex;
 			}
+			foreach (var mat in outputMats)
+				mat.mainTexture = _rtex0;
 		}
 	}
 }

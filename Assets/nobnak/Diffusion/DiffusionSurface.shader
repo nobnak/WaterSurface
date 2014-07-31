@@ -51,7 +51,7 @@
 				
 				float lambda = IN.lambda;
 				float hNext = (1.0 - 4.0 * lambda) * hCurr + lambda * (h_ip + h_in + h_jp + h_jn);
-				//hNext *= saturate(1.0 - _K);
+				hNext *= saturate(1.0 - _K);
 				return float4(hNext, 0.0, 0.0, 1.0);
 			}
 			ENDCG
