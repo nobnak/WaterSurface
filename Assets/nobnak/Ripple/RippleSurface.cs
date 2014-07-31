@@ -41,6 +41,8 @@ namespace nobnak.Ripple {
 
 		void Update() {
 			var n = Mathf.FloorToInt((Time.timeSinceLevelLoad - _tPrev) / _dt);
+			if (n == 0)
+				return;
 			_tPrev += n * _dt;
 
 			if (Input.GetMouseButton(0)) {
@@ -67,11 +69,12 @@ namespace nobnak.Ripple {
 			}
 
 			for (var i = 0; i < n; i++) {
+				_rtex1.DiscardContents();
 				Graphics.Blit(_rtex0, _rtex1, rippleSurfaceMat);
-				foreach (var mat in outputMats)
-					mat.mainTexture = _rtex1;
 				var tmpRtex = _rtex0; _rtex0 = _rtex1; _rtex1 = tmpRtex;
 			}
+			foreach (var mat in outputMats)
+				mat.mainTexture = _rtex0;
 		}
 
 		[StructLayout(LayoutKind.Sequential)]
