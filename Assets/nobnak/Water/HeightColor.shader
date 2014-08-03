@@ -23,6 +23,7 @@
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			half hCurr = tex2D (_MainTex, IN.uv_MainTex).r;
+			
 			o.Emission = _Gain * (hCurr >= 0.0 ? hCurr * _Positive : -hCurr * _Negative);
 			o.Alpha = 1.0;
 		}

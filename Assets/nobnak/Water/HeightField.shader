@@ -32,6 +32,7 @@
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			float r = tex2D(_MainTex, IN.uv_MainTex).r;
+			
 			o.Emission = _GainColor * (r >= 0.0 ? r * _Positive.rgb : -r * _Negative.rgb);
 			o.Alpha = 1.0;
 		}
